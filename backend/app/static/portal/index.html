@@ -1,0 +1,779 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Check your examination hall allotment by entering your register number.">
+<meta name="color-scheme" content="light">
+<title>Exam Allotment Portal | VSB Engineering College</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&family=JetBrains+Mono:wght@500;700&display=swap" rel="stylesheet">
+<style>
+/* ================================================================
+   VSB EXAM ALLOTMENT PORTAL — Self-contained, responsive CSS
+   ================================================================ */
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --blue:#1a56db;--blue-dk:#1341af;--blue-lt:#eff4ff;
+  --teal:#0694a2;--teal-lt:#e0f9fb;
+  --green:#0e9f6e;--green-lt:#def7ec;
+  --amber:#c27803;--amber-lt:#fdf6b2;
+  --red:#e02424;--red-lt:#fde8e8;
+  --gray-50:#f9fafb;--gray-100:#f3f4f6;--gray-200:#e5e7eb;
+  --gray-300:#d1d5db;--gray-400:#9ca3af;--gray-500:#6b7280;
+  --gray-600:#4b5563;--gray-700:#374151;--gray-800:#1f2937;--gray-900:#111827;
+  --white:#ffffff;
+  --shadow-sm:0 1px 2px rgba(0,0,0,.06);
+  --shadow:0 1px 3px rgba(0,0,0,.1),0 1px 2px rgba(0,0,0,.06);
+  --shadow-md:0 4px 6px rgba(0,0,0,.07),0 2px 4px rgba(0,0,0,.06);
+  --shadow-lg:0 10px 15px rgba(0,0,0,.1),0 4px 6px rgba(0,0,0,.05);
+  --shadow-xl:0 20px 25px rgba(0,0,0,.1),0 10px 10px rgba(0,0,0,.04);
+  --radius-sm:6px;--radius:10px;--radius-lg:16px;--radius-xl:24px;
+  --font-sans:"Inter",system-ui,sans-serif;
+  --font-mono:"JetBrains Mono",ui-monospace,monospace;
+  --transition:.18s ease;
+}
+html{scroll-behavior:smooth}
+body{
+  font-family:var(--font-sans);
+  background:var(--gray-50);
+  color:var(--gray-800);
+  line-height:1.6;
+  min-height:100vh;
+}
+/* ---- skip link ---- */
+.skip{position:absolute;left:-9999px;top:0;z-index:100;padding:8px 12px;background:var(--blue);color:#fff;border-radius:var(--radius-sm)}
+.skip:focus{left:8px}
+
+/* ============================================================
+   HEADER
+============================================================ */
+header{
+  background:linear-gradient(135deg,#0d2b7e 0%,#1a56db 60%,#1e88e5 100%);
+  color:#fff;
+  padding:0 20px;
+  position:relative;
+  overflow:hidden;
+}
+header::before{
+  content:"";position:absolute;inset:0;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='60' height='60'%3E%3Ccircle cx='30' cy='30' r='28' fill='none' stroke='rgba(255,255,255,.04)' stroke-width='2'/%3E%3C/svg%3E") repeat;
+  opacity:.5;
+}
+.header-inner{
+  position:relative;
+  max-width:900px;
+  margin:0 auto;
+  display:flex;
+  align-items:center;
+  gap:20px;
+  padding:28px 0 24px;
+}
+.college-logo{
+  width:72px;height:72px;flex-shrink:0;
+  background:#fff;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  box-shadow:0 0 0 4px rgba(255,255,255,.25);
+  overflow:hidden;
+}
+.college-logo svg{width:50px;height:50px}
+.header-text h1{font-size:1.6rem;font-weight:800;line-height:1.2;letter-spacing:-.02em}
+.header-text .subtitle{font-size:.88rem;opacity:.8;margin-top:4px}
+.header-text .inst{font-size:.8rem;opacity:.65;margin-top:2px;font-weight:500;text-transform:uppercase;letter-spacing:.06em}
+
+/* ============================================================
+   SEARCH SECTION
+============================================================ */
+.search-section{
+  background:var(--white);
+  border-bottom:1px solid var(--gray-200);
+  padding:28px 20px 24px;
+  box-shadow:var(--shadow);
+  position:relative;z-index:10;
+}
+.search-wrap{max-width:640px;margin:0 auto;text-align:center}
+.search-label{display:block;font-weight:600;color:var(--gray-700);margin-bottom:12px;font-size:.95rem}
+.search-form{display:flex;gap:10px;align-items:center}
+.search-input{
+  flex:1;
+  padding:13px 18px;
+  font-size:1rem;
+  font-family:var(--font-mono);
+  font-weight:600;
+  letter-spacing:.08em;
+  text-transform:uppercase;
+  border:2px solid var(--gray-300);
+  border-radius:var(--radius);
+  outline:none;
+  color:var(--gray-900);
+  background:var(--white);
+  transition:border-color var(--transition),box-shadow var(--transition);
+}
+.search-input:focus{border-color:var(--blue);box-shadow:0 0 0 3px rgba(26,86,219,.15)}
+.search-input::placeholder{color:var(--gray-400);font-family:var(--font-sans);font-weight:400;text-transform:none;letter-spacing:0}
+.btn{
+  display:inline-flex;align-items:center;gap:8px;
+  padding:12px 22px;
+  font-size:.93rem;font-weight:600;
+  border:none;border-radius:var(--radius);cursor:pointer;
+  transition:background var(--transition),transform .1s,box-shadow var(--transition);
+  white-space:nowrap;text-decoration:none;
+}
+.btn:active{transform:translateY(1px)}
+.btn-primary{background:var(--blue);color:#fff}
+.btn-primary:hover{background:var(--blue-dk);box-shadow:var(--shadow-md)}
+.btn-primary:disabled{background:var(--gray-400);cursor:not-allowed;transform:none;box-shadow:none}
+.btn-ghost{background:transparent;color:var(--gray-600);border:1.5px solid var(--gray-300)}
+.btn-ghost:hover{background:var(--gray-100);border-color:var(--gray-400)}
+.btn-print{background:var(--green);color:#fff}
+.btn-print:hover{background:#0a7a56;box-shadow:var(--shadow-md)}
+.hint{margin-top:8px;font-size:.8rem;color:var(--gray-500)}
+
+/* ============================================================
+   CONTENT AREA
+============================================================ */
+main{max-width:900px;margin:0 auto;padding:32px 20px 60px}
+
+/* ============================================================
+   STATES: loading, error, empty
+============================================================ */
+.state-box{
+  margin:48px auto;max-width:480px;text-align:center;
+  padding:40px 32px;
+  background:var(--white);border:1px solid var(--gray-200);
+  border-radius:var(--radius-xl);box-shadow:var(--shadow);
+}
+.state-icon{font-size:3rem;line-height:1;margin-bottom:16px}
+.state-title{font-size:1.1rem;font-weight:700;color:var(--gray-800);margin-bottom:8px}
+.state-desc{font-size:.88rem;color:var(--gray-500);line-height:1.6}
+.state-box.error .state-icon{filter:drop-shadow(0 0 8px rgba(224,36,36,.2))}
+.state-box.warn{background:var(--amber-lt);border-color:#f9d14e}
+.state-box.warn .state-title{color:var(--amber)}
+.spinner{
+  width:36px;height:36px;margin:0 auto 16px;
+  border:3.5px solid var(--gray-200);
+  border-top-color:var(--blue);
+  border-radius:50%;
+  animation:spin .8s linear infinite;
+}
+@keyframes spin{to{transform:rotate(360deg)}}
+
+/* ============================================================
+   RESULT CARD
+============================================================ */
+#result-panel{display:none}
+.result-header{
+  display:flex;align-items:flex-start;gap:16px;
+  background:var(--blue-lt);
+  border:1.5px solid #bfcfff;
+  border-radius:var(--radius-lg);
+  padding:20px 24px;margin-bottom:20px;
+}
+.result-avatar{
+  width:52px;height:52px;flex-shrink:0;
+  background:var(--blue);color:#fff;
+  border-radius:50%;font-size:1.4rem;font-weight:700;
+  display:flex;align-items:center;justify-content:center;
+}
+.result-name{font-size:1.1rem;font-weight:700;color:var(--gray-900)}
+.result-meta{display:flex;flex-wrap:wrap;gap:6px 16px;margin-top:4px}
+.badge{
+  display:inline-flex;align-items:center;gap:4px;
+  padding:3px 10px;border-radius:99px;
+  font-size:.75rem;font-weight:600;
+}
+.badge-blue{background:rgba(26,86,219,.12);color:var(--blue-dk)}
+.badge-teal{background:var(--teal-lt);color:var(--teal)}
+.badge-gray{background:var(--gray-100);color:var(--gray-600)}
+
+/* Allotment cards */
+.section-title{
+  font-size:.7rem;font-weight:700;text-transform:uppercase;
+  letter-spacing:.08em;color:var(--gray-500);margin:24px 0 10px;
+}
+.allotment-grid{display:grid;grid-template-columns:1fr;gap:14px}
+@media(min-width:600px){.allotment-grid{grid-template-columns:1fr 1fr}}
+
+.allot-card{
+  background:var(--white);
+  border:1.5px solid var(--gray-200);
+  border-radius:var(--radius-lg);
+  overflow:hidden;
+  box-shadow:var(--shadow-sm);
+  transition:box-shadow var(--transition);
+}
+.allot-card:hover{box-shadow:var(--shadow-md)}
+.allot-card-head{
+  padding:14px 18px 12px;
+  border-bottom:1px solid var(--gray-100);
+  background:var(--gray-50);
+  display:flex;align-items:flex-start;gap:10px;
+}
+.allot-card-icon{font-size:1.4rem;flex-shrink:0;margin-top:1px}
+.allot-subject{font-weight:700;font-size:.97rem;color:var(--gray-900);line-height:1.3}
+.allot-code{font-size:.78rem;color:var(--gray-500);font-family:var(--font-mono);margin-top:2px}
+.allot-card-body{padding:14px 18px}
+.allot-row{display:flex;align-items:center;gap:8px;padding:5px 0;border-bottom:1px solid var(--gray-100)}
+.allot-row:last-child{border:none;padding-bottom:0}
+.allot-label{flex-shrink:0;width:84px;font-size:.78rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em;color:var(--gray-400)}
+.allot-value{font-size:.88rem;color:var(--gray-700)}
+.allot-value.big{font-size:1rem;font-weight:700;color:var(--gray-900);font-family:var(--font-mono)}
+.allot-value.hall-val{color:var(--blue-dk);font-weight:600}
+.allot-value.seat-val{
+  font-family:var(--font-mono);font-weight:700;font-size:1.1rem;
+  color:var(--blue);
+}
+.session-pill{
+  display:inline-flex;align-items:center;gap:4px;
+  background:var(--teal-lt);color:var(--teal);
+  padding:2px 10px;border-radius:99px;font-size:.78rem;font-weight:600;
+}
+
+/* Location sub-block */
+.loc-block{
+  margin-top:8px;padding:10px 12px;
+  background:var(--blue-lt);border:1px solid #d0dcff;
+  border-radius:var(--radius-sm);
+}
+.loc-block .loc-row{display:flex;gap:8px;padding:3px 0;font-size:.82rem}
+.loc-row span:first-child{color:var(--gray-400);min-width:60px;font-size:.75rem;font-weight:600;text-transform:uppercase;letter-spacing:.04em}
+.loc-row span:last-child{color:var(--gray-700);font-weight:500}
+
+/* VSB alloc cards */
+.vsb-card{
+  background:var(--white);
+  border:1.5px solid var(--teal-lt);
+  border-radius:var(--radius-lg);overflow:hidden;
+  box-shadow:var(--shadow-sm);
+}
+.vsb-card-head{
+  background:var(--teal-lt);
+  padding:12px 18px;
+  display:flex;align-items:center;gap:8px;
+  border-bottom:1px solid #aee;
+}
+.vsb-badge{font-size:.7rem;font-weight:700;padding:2px 8px;background:var(--teal);color:#fff;border-radius:99px;text-transform:uppercase;letter-spacing:.04em}
+.verify-note{
+  margin:12px 0 0;
+  padding:8px 12px;background:var(--amber-lt);border-left:3px solid #c27803;
+  border-radius:0 var(--radius-sm) var(--radius-sm) 0;
+  font-size:.78rem;color:var(--amber);
+}
+
+/* Source documents */
+.source-card{
+  background:var(--white);
+  border:1.5px solid var(--gray-200);border-radius:var(--radius);
+  padding:12px 16px;display:flex;align-items:center;gap:12px;
+  margin-bottom:8px;
+}
+.source-icon{font-size:1.4rem;flex-shrink:0}
+.source-info{flex:1;min-width:0}
+.source-desc{font-size:.82rem;color:var(--gray-700);font-weight:500}
+.source-meta{font-size:.75rem;color:var(--gray-400);margin-top:1px}
+
+/* Print slip */
+.print-actions{
+  margin-top:28px;padding:20px 24px;
+  background:var(--green-lt);border:1.5px solid #96e9c8;
+  border-radius:var(--radius-lg);
+  display:flex;align-items:center;justify-content:space-between;gap:16px;
+  flex-wrap:wrap;
+}
+.print-text strong{color:var(--green);font-size:.95rem}
+.print-text p{font-size:.8rem;color:var(--gray-500);margin-top:2px}
+
+/* No allotments */
+.no-allot{
+  background:var(--amber-lt);border:1.5px solid #f9d14e;
+  border-radius:var(--radius-lg);padding:24px;text-align:center;
+  margin:8px 0;
+}
+.no-allot p{font-size:.88rem;color:var(--amber)}
+
+/* ============================================================
+   PRINT STYLES
+============================================================ */
+@media print{
+  header,
+  .search-section,
+  .print-actions,
+  .skip,
+  .no-print{display:none!important}
+  body{background:#fff;font-size:11pt}
+  main{max-width:100%;padding:0}
+  #result-panel{display:block!important}
+  .allot-card,.vsb-card{page-break-inside:avoid;border:1pt solid #ccc!important;box-shadow:none!important;margin-bottom:12pt}
+  .allot-card-head,.vsb-card-head{background:#f5f5f5!important}
+  .print-header{display:block!important}
+}
+.print-header{
+  display:none;
+  text-align:center;margin-bottom:16pt;border-bottom:2pt solid #333;padding-bottom:12pt
+}
+.print-header h1{font-size:14pt;font-weight:700}
+.print-header p{font-size:10pt;color:#555}
+
+/* ============================================================
+   FOOTER
+============================================================ */
+footer{
+  text-align:center;padding:20px;
+  font-size:.78rem;color:var(--gray-400);
+  border-top:1px solid var(--gray-200);
+  background:var(--white);margin-top:60px;
+}
+footer a{color:var(--blue);text-decoration:none}
+footer a:hover{text-decoration:underline}
+
+/* ============================================================
+   RESPONSIVE
+============================================================ */
+@media(max-width:540px){
+  .header-inner{flex-direction:column;text-align:center;gap:12px;padding:20px 0 18px}
+  .header-text h1{font-size:1.3rem}
+  .search-form{flex-direction:column}
+  .btn{width:100%;justify-content:center}
+  .result-header{flex-direction:column;align-items:center;text-align:center}
+  .result-meta{justify-content:center}
+  .print-actions{flex-direction:column;text-align:center}
+}
+</style>
+</head>
+<body>
+<a class="skip" href="#main">Skip to main content</a>
+
+<!-- PRINT-ONLY HEADER -->
+<div class="print-header">
+  <h1 id="print-college-name">Exam Allotment Portal</h1>
+  <p>Official Examination Hall Allotment Slip</p>
+  <p id="print-date"></p>
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="header-inner">
+    <div class="college-logo" aria-hidden="true">
+      <!-- Book + mortarboard SVG icon -->
+      <svg viewBox="0 0 60 60" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M30 8L6 20l24 12 24-12L30 8z" fill="#1a56db"/>
+        <path d="M14 26v14c0 4.4 7.2 8 16 8s16-3.6 16-8V26L30 32 14 26z" fill="#1341af"/>
+        <path d="M50 20v14" stroke="#1a56db" stroke-width="2.5" stroke-linecap="round"/>
+        <circle cx="50" cy="36" r="3" fill="#1341af"/>
+      </svg>
+    </div>
+    <div class="header-text">
+      <h1 id="college-title">Exam Allotment Portal</h1>
+      <div class="subtitle" id="college-subtitle">Official Examination Hall Allotment Lookup</div>
+      <div class="inst" id="college-inst">VSB Engineering College, Karur</div>
+    </div>
+  </div>
+</header>
+
+<!-- SEARCH -->
+<div class="search-section">
+  <div class="search-wrap">
+    <label class="search-label" for="regInput">Enter your Register Number</label>
+    <form class="search-form" id="searchForm" role="search" aria-label="Register number lookup">
+      <input
+        id="regInput"
+        class="search-input"
+        type="search"
+        inputmode="text"
+        maxlength="30"
+        autocomplete="off"
+        autocorrect="off"
+        autocapitalize="characters"
+        spellcheck="false"
+        placeholder="e.g. 922525106"
+        aria-label="Register number"
+      >
+      <button class="btn btn-primary" type="submit" id="searchBtn" aria-label="Search allotment">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        Search
+      </button>
+    </form>
+    <p class="hint">Enter your 9–12 character register number. Allotments are only shown for published examinations.</p>
+  </div>
+</div>
+
+<!-- MAIN CONTENT -->
+<main id="main" aria-live="polite" aria-atomic="true">
+
+  <!-- Initial welcome state -->
+  <div id="state-welcome" class="state-box">
+    <div class="state-icon">🎓</div>
+    <div class="state-title">Check Your Hall Allotment</div>
+    <div class="state-desc">Enter your register number above to view your examination hall, seat, date and time for all upcoming published examinations.</div>
+  </div>
+
+  <!-- Loading state -->
+  <div id="state-loading" class="state-box" style="display:none" role="status" aria-label="Loading">
+    <div class="spinner"></div>
+    <div class="state-title">Looking up your allotment…</div>
+    <div class="state-desc">Please wait while we fetch your examination details.</div>
+  </div>
+
+  <!-- Error / 404 state -->
+  <div id="state-error" class="state-box error" style="display:none">
+    <div class="state-icon" id="err-icon">❌</div>
+    <div class="state-title" id="err-title">Register Number Not Found</div>
+    <div class="state-desc" id="err-desc">No student record was found for this register number. Please check and try again.</div>
+  </div>
+
+  <!-- RESULT PANEL -->
+  <div id="result-panel">
+
+    <!-- Student identity -->
+    <div class="result-header">
+      <div class="result-avatar" id="result-avatar" aria-hidden="true">👤</div>
+      <div>
+        <div class="result-name" id="result-name">Student</div>
+        <div class="result-meta" id="result-meta"></div>
+      </div>
+    </div>
+
+    <!-- Allotments section (from allotments table) -->
+    <div id="allotments-section" style="display:none">
+      <div class="section-title">📋 Exam Hall Allotments</div>
+      <div class="allotment-grid" id="allotments-grid"></div>
+    </div>
+
+    <!-- VSB Allocations section -->
+    <div id="vsb-section" style="display:none">
+      <div class="section-title">🏛️ Official VSB Allocations</div>
+      <div id="vsb-grid"></div>
+    </div>
+
+    <!-- Source documents -->
+    <div id="docs-section" style="display:none">
+      <div class="section-title">📄 Source Documents</div>
+      <div id="docs-list"></div>
+    </div>
+
+    <!-- No allotments at all -->
+    <div id="no-allot-box" class="no-allot" style="display:none">
+      <div style="font-size:2rem;margin-bottom:8px">📭</div>
+      <p><strong>No published allotments found</strong> for this register number at this time.</p>
+      <p style="margin-top:6px">Allotments are displayed only after the examination office publishes them. Please check back later or contact the Controller of Examinations.</p>
+    </div>
+
+    <!-- Print actions -->
+    <div class="print-actions no-print" id="print-box" style="display:none">
+      <div class="print-text">
+        <strong>🖨️ Print your Allotment Slip</strong>
+        <p>Save a copy for your records before the examination date.</p>
+      </div>
+      <button class="btn btn-print" onclick="window.print()">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M6 9V2h12v7"/><path d="M6 18H4a2 2 0 0 1-2-2v-5a2 2 0 0 1 2-2h16a2 2 0 0 1 2 2v5a2 2 0 0 1-2 2h-2"/><rect x="6" y="14" width="12" height="8"/></svg>
+        Print / Save PDF
+      </button>
+    </div>
+
+  </div><!-- /result-panel -->
+
+</main>
+
+<footer>
+  <p>
+    <strong id="footer-college">VSB Engineering College</strong> — Exam Monitor Ultimate
+    &nbsp;|&nbsp;
+    Data is sourced from the official examination management system and displayed for student convenience only.
+    &nbsp;|&nbsp;
+    <a href="/">Staff Portal</a>
+  </p>
+</footer>
+
+<script>
+(function(){
+"use strict";
+
+/* ================================================================
+   Utility
+================================================================ */
+function esc(s){
+  if(s==null)return "";
+  return String(s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;").replace(/"/g,"&quot;");
+}
+function $(id){return document.getElementById(id)}
+function show(id,v){$(id).style.display=v||"block"}
+function hide(id){$(id).style.display="none"}
+
+/* ================================================================
+   Config from API
+================================================================ */
+var collegeName="VSB Engineering College";
+var productName="Exam Monitor Ultimate";
+
+fetch("/api/config").then(function(r){return r.json()}).then(function(d){
+  collegeName=d.college_name||collegeName;
+  document.title="Exam Allotment Portal | "+collegeName;
+  $("college-title").textContent="Exam Allotment Portal";
+  $("college-inst").textContent=collegeName;
+  $("print-college-name").textContent=collegeName+" — Exam Allotment Slip";
+  $("footer-college").textContent=collegeName;
+}).catch(function(){});
+
+/* ================================================================
+   States
+================================================================ */
+function showState(name){
+  hide("state-welcome");
+  hide("state-loading");
+  hide("state-error");
+  hide("result-panel");
+  if(name==="welcome")show("state-welcome");
+  else if(name==="loading")show("state-loading");
+  else if(name==="error")show("state-error");
+  else if(name==="result")show("result-panel","block");
+}
+
+/* ================================================================
+   Search logic
+================================================================ */
+var form=$("searchForm");
+var input=$("regInput");
+var btn=$("searchBtn");
+
+function doSearch(raw){
+  var reg=(raw||"").trim().toUpperCase();
+  if(!reg){input.focus();return;}
+  btn.disabled=true;
+  showState("loading");
+  // Update URL without reload
+  var url=new URL(window.location.href);
+  url.searchParams.set("reg",reg);
+  history.replaceState(null,"",url.toString());
+
+  fetch("/api/lookup/"+encodeURIComponent(reg))
+    .then(function(r){
+      if(r.status===429){
+        return r.json().then(function(d){
+          throw {status:429,msg:d.detail||"Too many requests. Please wait and try again."};
+        });
+      }
+      if(r.status===404){
+        throw {status:404,msg:"No student record found for register number "+reg+". Please verify and try again."};
+      }
+      if(!r.ok){
+        return r.json().then(function(d){
+          throw {status:r.status,msg:d.detail||"An error occurred. Please try again."};
+        });
+      }
+      return r.json();
+    })
+    .then(function(data){renderResult(data,reg);})
+    .catch(function(err){
+      showState("error");
+      var icon="❌",title="Register Number Not Found",desc="";
+      if(err.status===429){icon="⏳";title="Too Many Searches";desc=err.msg;}
+      else if(err.status===404){icon="🔍";title="Register Number Not Found";desc=err.msg||"No student record was found. Please check and try again.";}
+      else if(err.status===422){icon="⚠️";title="Invalid Register Number";desc="Please enter a valid register number (letters and digits only).";}
+      else{icon="⚠️";title="Connection Error";desc=err.msg||"Could not reach the server. Please check your connection and try again.";}
+      $("err-icon").textContent=icon;
+      $("err-title").textContent=title;
+      $("err-desc").textContent=desc;
+    })
+    .finally(function(){btn.disabled=false;});
+}
+
+form.addEventListener("submit",function(e){
+  e.preventDefault();
+  doSearch(input.value);
+});
+
+/* Auto-search if ?reg= is in the URL */
+(function(){
+  var params=new URLSearchParams(window.location.search);
+  var reg=params.get("reg");
+  if(reg){
+    input.value=reg.toUpperCase();
+    doSearch(reg);
+  }
+})();
+
+/* ================================================================
+   Render result
+================================================================ */
+function renderResult(data,reg){
+  showState("result");
+
+  /* ---- student identity ---- */
+  var s=data.student||{};
+  var name=s.full_name||(s.register_number||reg);
+  var initial=(s.full_name||reg||"?").charAt(0).toUpperCase();
+  $("result-avatar").textContent=initial;
+  $("result-name").textContent=name;
+  var metaEl=$("result-meta");
+  metaEl.innerHTML="";
+  function addBadge(txt,cls){
+    var b=document.createElement("span");
+    b.className="badge "+cls;
+    b.textContent=txt;
+    metaEl.appendChild(b);
+  }
+  addBadge(s.register_number||reg,"badge-blue");
+  if(s.department)addBadge(s.department,"badge-teal");
+  if(s.year)addBadge("Year "+s.year,"badge-gray");
+
+  /* print date */
+  $("print-date").textContent="Printed: "+new Date().toLocaleString("en-IN",{timeZone:"Asia/Kolkata",day:"numeric",month:"long",year:"numeric",hour:"2-digit",minute:"2-digit"});
+
+  var allotments=data.allotments||[];
+  var vsb=data.vsb_allocations||[];
+  var docs=data.source_documents||[];
+  var total=allotments.length+vsb.length;
+
+  /* ---- allotments ---- */
+  if(allotments.length){
+    var grid=$("allotments-grid");
+    grid.innerHTML="";
+    allotments.forEach(function(a){
+      grid.appendChild(buildAllotCard(a));
+    });
+    show("allotments-section");
+  }else{
+    hide("allotments-section");
+  }
+
+  /* ---- VSB allocations ---- */
+  if(vsb.length){
+    var vgrid=$("vsb-grid");
+    vgrid.innerHTML="";
+    vsb.forEach(function(v){
+      vgrid.appendChild(buildVsbCard(v));
+    });
+    show("vsb-section");
+  }else{
+    hide("vsb-section");
+  }
+
+  /* ---- source documents ---- */
+  if(docs.length){
+    var dl=$("docs-list");
+    dl.innerHTML="";
+    docs.forEach(function(d){
+      dl.appendChild(buildDocCard(d));
+    });
+    show("docs-section");
+  }else{
+    hide("docs-section");
+  }
+
+  /* ---- no allotment ---- */
+  if(total===0){
+    show("no-allot-box");
+    hide("print-box");
+  }else{
+    hide("no-allot-box");
+    show("print-box");
+  }
+}
+
+/* ================================================================
+   Card builders
+================================================================ */
+function fmtDate(d){
+  if(!d)return "—";
+  try{
+    var parts=d.split("T")[0].split("-");
+    if(parts.length===3){
+      var months=["Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec"];
+      return parseInt(parts[2],10)+" "+months[parseInt(parts[1],10)-1]+" "+parts[0];
+    }
+    return d;
+  }catch(e){return d;}
+}
+
+function buildAllotCard(a){
+  var div=document.createElement("div");
+  div.className="allot-card";
+
+  var locHtml="";
+  if(a.location&&Object.keys(a.location).length){
+    var loc=a.location;
+    var rows=[];
+    if(loc.building)rows.push(['Building',loc.building]);
+    if(loc.block)rows.push(['Block',loc.block]);
+    if(loc.floor)rows.push(['Floor',loc.floor]);
+    if(loc.room)rows.push(['Room',loc.room]);
+    if(rows.length){
+      locHtml='<div class="loc-block">';
+      rows.forEach(function(r){
+        locHtml+='<div class="loc-row"><span>'+esc(r[0])+'</span><span>'+esc(r[1])+'</span></div>';
+      });
+      locHtml+='</div>';
+    }
+  }
+
+  div.innerHTML=
+    '<div class="allot-card-head">'+
+      '<div class="allot-card-icon">📋</div>'+
+      '<div>'+
+        '<div class="allot-subject">'+esc(a.exam||"Examination")+'</div>'+
+        '<div class="allot-code">'+esc(a.subject_code||"")+'</div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="allot-card-body">'+
+      '<div class="allot-row"><span class="allot-label">Date</span><span class="allot-value big">'+esc(fmtDate(a.date))+'</span></div>'+
+      '<div class="allot-row"><span class="allot-label">Time</span><span class="allot-value">'+esc(a.time||"—")+'</span></div>'+
+      '<div class="allot-row"><span class="allot-label">Hall</span><span class="allot-value hall-val">'+esc(a.hall||"—")+'</span></div>'+
+      '<div class="allot-row"><span class="allot-label">Seat</span><span class="allot-value seat-val">'+esc(a.seat||"—")+'</span></div>'+
+      (locHtml?'<div class="allot-row" style="display:block;padding-top:10px"><span class="allot-label">Location</span>'+locHtml+'</div>':'')+
+    '</div>';
+  return div;
+}
+
+function buildVsbCard(v){
+  var div=document.createElement("div");
+  div.className="vsb-card";
+  div.style.marginBottom="12px";
+
+  var src="";
+  if(v.source&&v.source.url){
+    src='<a href="'+esc(v.source.url)+'" target="_blank" rel="noopener noreferrer" class="no-print" style="font-size:.78rem;color:var(--teal);text-decoration:none;margin-left:8px">↗ Source PDF</a>';
+  }
+
+  var verifyNote=v.verify_note?'<div class="verify-note">⚠️ '+esc(v.verify_note)+'</div>':"";
+
+  var session=v.session?'<span class="session-pill">'+esc(v.session)+'</span>':"";
+
+  div.innerHTML=
+    '<div class="vsb-card-head">'+
+      '<span class="vsb-badge">VSB Official</span>'+
+      '<span style="font-weight:600;font-size:.93rem;flex:1">'+esc(v.exam||v.subject||"Examination")+'</span>'+
+      src+
+    '</div>'+
+    '<div class="allot-card-body">'+
+      '<div class="allot-row"><span class="allot-label">Subject</span><span class="allot-value">'+esc(v.subject||v.subject_code||"—")+'</span></div>'+
+      (v.subject_code?'<div class="allot-row"><span class="allot-label">Code</span><span class="allot-value" style="font-family:var(--font-mono)">'+esc(v.subject_code)+'</span></div>':'')+
+      '<div class="allot-row"><span class="allot-label">Date</span><span class="allot-value big">'+esc(fmtDate(v.date))+'</span></div>'+
+      (v.session?'<div class="allot-row"><span class="allot-label">Session</span><span class="allot-value">'+session+'</span></div>':'')+
+      '<div class="allot-row"><span class="allot-label">Hall</span><span class="allot-value hall-val">'+esc(v.hall||"—")+'</span></div>'+
+      '<div class="allot-row"><span class="allot-label">Seat</span><span class="allot-value seat-val">'+esc(v.seat||"—")+'</span></div>'+
+      (v.department?'<div class="allot-row"><span class="allot-label">Dept</span><span class="allot-value">'+esc(v.department)+'</span></div>':'')+
+      verifyNote+
+    '</div>';
+  return div;
+}
+
+function buildDocCard(d){
+  var div=document.createElement("div");
+  div.className="source-card no-print";
+  div.innerHTML=
+    '<div class="source-icon">📄</div>'+
+    '<div class="source-info">'+
+      '<div class="source-desc">Page '+esc(d.page_number||"?")+'&nbsp;&mdash;&nbsp;'+
+        (d.hall?'Hall: '+esc(d.hall)+'&nbsp;':'')+
+        (d.seat_number?'Seat: '+esc(d.seat_number)+'&nbsp;':'')+
+        (d.subject_code?'('+esc(d.subject_code)+')':'')+'</div>'+
+      '<div class="source-meta">Source: '+esc(d.source||"Administrator-approved PDF extraction")+'</div>'+
+    '</div>';
+  return div;
+}
+
+})(); // end IIFE
+</script>
+</body>
+</html>
